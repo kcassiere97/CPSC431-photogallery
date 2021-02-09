@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <head>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="color.scss">
+
+    </head>
+    
+      <!-- main font-end -->
+        <body class="container">
+            <h1>Add Photo to Gallery</h1>
+            <form action="gallery.php" method="post" enctype="multipart/form-data">
+            <section>
+                <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <lable>Photo name:</lable>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class= "photoname"  name=photoname>
+                            </div>
+                            <div class="form-group">
+                                <lable>Date taken:</lable>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input class= "date" name=date>
+                            </div>
+                            <div class="form-group">
+                                <lable>Photographer:</lable>&nbsp;&nbsp;
+                                <input class= "photographer" name=photographer>
+                            </div>
+                            <div class="form-group">
+                                <lable>Location:</lable>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input class= "location" name=location>
+                            </div>
+                        </div>
+                </div>
+                <div class="frame">
+                    <div class="center">
+                        <div class="title">
+                            <h1>Drop file to upload</h1>
+                        </div>
+                        <div class="dropzone">
+                            <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+                            <input type="file" name="fileToUpload" id="fileToUpload">
+                            <button type="submit" class= "btn btn-primary" name="submit">Submit</button> 
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </form>
+        </body>
+
+
+
+        <div class="center">
+            <div class="property-card">
+        
+                
+            </div>
+        </div>
+
+        
+      
+
+</html>
