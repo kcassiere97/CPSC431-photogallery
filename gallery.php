@@ -1,3 +1,9 @@
+<?php
+  // create short variable name
+  $document_root = $_SERVER['DOCUMENT_ROOT'];
+  $file_name = $_FILES["fileToUpload"]["name"];
+?>
+
 <!-- Store data from text-box to a file -->
 <?php
  $path = 'data.txt';
@@ -10,3 +16,16 @@
 ?>
 
 <!-- Sort strings from the file and output them to html -->
+
+<?php
+$path = "data.txt";
+$photoname_ = trim($_POST['photoname_']);
+$email = trim($_POST['date_']);
+$name = trim($_POST['photographer_']);
+$location = trim($_POST['location_']);)
+
+function 
+
+
+
+?> 
