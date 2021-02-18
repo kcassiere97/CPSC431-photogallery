@@ -21,7 +21,9 @@
               </select>           
               <input type="submit" value="Submit">
             </form>  
-            <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button>   
+            <form action="index.html" method = "post">
+            <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button> 
+            </form>  
       </div>
       </body>
       </html>
@@ -52,16 +54,16 @@
     // $name = trim($_POST['photographer_']);
     // $location = trim($_POST['location_']);
 
-    $strings = file("$document_root/data.txt")
+    //$strings = file("$document_root/data.txt")
 
     // count the number of photos in the array
-    $number_of_photos = count($strings);
+    //$number_of_photos = count($strings);
 
 
 
-    if ($number_of_photos == 0) {
+   /* if ($number_of_photos == 0) {
       echo "<p><strong>No photos.<br />
             Please try again later.</strong></p>";
-    }
+    }*/
 
 ?> 
