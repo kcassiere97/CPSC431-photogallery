@@ -14,10 +14,10 @@
                     <form action="gallery.php">
                     <label for="sorting" class ="p1">Sort By:</label>
                     <select name="sorting" id="sorting">
-                      <option value="name">Name</option>
-                      <option value="dateTaken">Date Taken</option>
-                      <option value="location">Location</option>
-                      <option value="Photographer">Photographer</option>
+                      <option id="mer" value="name">Name</option>
+                      <option id="mer" value="dateTaken">Date Taken</option>
+                      <option id="mer" value="location">Location</option>
+                      <option id="mer" value="Photographer">Photographer</option>
                     </select>
                     <br><br>
                     <input type="submit" value="Submit">
@@ -53,16 +53,74 @@
     // $name = trim($_POST['photographer_']);
     // $location = trim($_POST['location_']);
 
+    $counter = 1;
+
     $strings = file("$document_root/data.txt")
 
     // count the number of photos in the array
     $number_of_photos = count($strings);
 
 
-
+    // Check if number of photos are empty
     if ($number_of_photos == 0) {
       echo "<p><strong>No photos.<br />
             Please try again later.</strong></p>";
+    } else {
+      
+      $counter = 1;
+
     }
 
-?> 
+
+  ?>
+   
+<?php
+    //Add each lines from data file to an array
+    $filename = 'data.txt'
+    $fp = @fopen($filename, "r");
+    if ($fp) {
+      $arr = explode("\n", fread($fp, filesize($filename)));
+    }
+?>
+
+  <?php
+    //Sorting by id
+    $('.sorting').click(function()){
+
+      $('#id').text($(this).text())
+
+      var i = $this.text;
+
+      if(i == 'name'){
+
+        array_sort($arr, 'name', SORT_ASC));
+
+      }
+      if(i == 'location'){
+
+        array_sort($arr, 'location', SORT_ASC));
+
+      }
+
+      if(i == 'dateTaken'){
+
+        array_sort($arr, 'dateTaken', SORT_ASC));
+
+
+      }
+
+      if(i == 'photographer'){
+
+        array_sort($arr, 'photographer', SORT_ASC));
+
+
+      }
+
+
+    }
+
+
+
+ echo "I think it works"
+ 
+?>
