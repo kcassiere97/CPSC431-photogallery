@@ -5,40 +5,15 @@
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="color.scss">
-
-    <style>
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            transition: 0.9s;
-  	        width: 100%;
-        }	
-        
-        .center {
-            margin: 0;
-            position: absolute;
-            top: 30%;
-            left: 30%;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            transition: 0.3s;
-            width: 40%;
-            text-align: center;
-        }
-
-        .p1 {
-            font-family: "Garamond", Times, serif;
-        }
-
-     </style>
+    <link rel="stylesheet" href="color.css">
 
     </head>
     
       <!-- main font-end -->
         <body class="container">
-           <!-- <div class="card">-->
                 <div class="center">
                     <h1 class ="p1">Add Photo to Gallery</h1>
-                        <form action="gallery.php" method="post" enctype="multipart/form-data">
+                        <form action="gallery.php" method="POST" enctype="multipart/form-data">
                             <section>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
@@ -73,6 +48,5 @@
                             </section>
                         </form>
                     </div>
-               <!-- </div>-->
             </body>
 </html>
