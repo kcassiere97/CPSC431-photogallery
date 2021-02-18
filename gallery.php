@@ -9,20 +9,19 @@
     </head>
   
         <body class="container">
-                <div class="center">
-                    <h1 class ="p1">View All Photos</h1>
-                    <form action="gallery.php">
-                    <label for="sorting" class ="p1">Sort By:</label>
-                    <select name="sorting" id="sorting">
-                      <option value="name">Name</option>
-                      <option value="dateTaken">Date Taken</option>
-                      <option value="location">Location</option>
-                      <option value="Photographer">Photographer</option>
-                    </select>
-                    <br><br>
-                    <input type="submit" value="Submit">
-                  </form>
-                   
+          <div class="center">
+            <h1 class ="p1">View All Photos</h1>
+            <form action="gallery.php">
+              <label for="sorting" class ="p1">Sort By:</label>
+              <select name="sorting" id="sorting">
+                <option value="name">Name</option>
+                <option value="dateTaken">Date Taken</option>
+                <option value="location">Location</option>
+                <option value="Photographer">Photographer</option>
+              </select>           
+              <input type="submit" value="Submit">
+            </form>  
+            <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button>   
       </div>
       </body>
       </html>
@@ -52,6 +51,4 @@ $photoname_ = trim($_POST['photoname_']);
 $email = trim($_POST['date_']);
 $name = trim($_POST['photographer_']);
 $location = trim($_POST['location_']);*/
-
-
 ?> 
