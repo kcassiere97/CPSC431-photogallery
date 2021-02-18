@@ -56,7 +56,7 @@
 
     $counter = 1;
 
-    $strings = file("$document_root/data.txt")
+    $strings = file("data.txt");
 
     // count the number of photos in the array
     $number_of_photos = count($strings);
@@ -77,7 +77,7 @@
    
 <?php
     //Add each lines from data file to an array
-    $filename = 'data.txt'
+    $filename = "data.txt";
     $fp = @fopen($filename, "r");
     if ($fp) {
       $arr = explode("\n", fread($fp, filesize($filename)));
@@ -86,9 +86,9 @@
 
   <?php
     //Sorting by id
-    $('.sorting').click(function()){
+    //$('.sorting').click(function()){
 
-      $('#id').text($(this).text())
+      //$('#id').text($(this).text())
 
       var i = $this.text;
 
@@ -119,9 +119,7 @@
 
 
     }
-
-
-
+    
  echo "I think it works"
  
 ?>
