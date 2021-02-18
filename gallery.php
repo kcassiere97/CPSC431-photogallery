@@ -59,7 +59,7 @@
     $strings = file("$document_root/data.txt")
 
     // count the number of photos in the array
-    //$number_of_photos = count($strings);
+    $number_of_photos = count($strings);
 
 
     // Check if number of photos are empty
