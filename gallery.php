@@ -9,20 +9,21 @@
     </head>
   
         <body class="container">
-                <div class="center">
-                    <h1 class ="p1">View All Photos</h1>
-                    <form action="gallery.php">
-                    <label for="sorting" class ="p1">Sort By:</label>
-                    <select name="sorting" id="sorting">
-                      <option id="mer" value="name">Name</option>
-                      <option id="mer" value="dateTaken">Date Taken</option>
-                      <option id="mer" value="location">Location</option>
-                      <option id="mer" value="Photographer">Photographer</option>
-                    </select>
-                    <br><br>
-                    <input type="submit" value="Submit">
-                  </form>
-                   
+          <div class="center">
+            <h1 class ="p1">View All Photos</h1>
+            <form action="gallery.php">
+              <label for="sorting" class ="p1">Sort By:</label>
+              <select name="sorting" id="sorting">
+                <option value="name">Name</option>
+                <option value="dateTaken">Date Taken</option>
+                <option value="location">Location</option>
+                <option value="Photographer">Photographer</option>
+              </select>           
+              <input type="submit" value="Submit">
+            </form>  
+            <form action="index.html" method = "post">
+            <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button> 
+            </form>  
       </div>
       </body>
       </html>
@@ -58,7 +59,7 @@
     $strings = file("$document_root/data.txt")
 
     // count the number of photos in the array
-    $number_of_photos = count($strings);
+    //$number_of_photos = count($strings);
 
 
     // Check if number of photos are empty
