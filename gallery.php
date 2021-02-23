@@ -1,3 +1,15 @@
+<?php
+  // create short variable names
+  $name = $_POST['photoname_'];
+  $date = (int) $_POST['date_'];
+  $date = date('H:i, jS F Y');
+  $photographer = $_POST['photographer_'];
+  //$location = $_POST['location_']
+  $location = preg_replace('/\t|\R/',' ',$_POST['location_']);
+  $document_root = $_SERVER['DOCUMENT_ROOT'];
+?>
+
+
 <html>
     <meta charset="utf-8">
     <head>
@@ -28,22 +40,33 @@
       </body>
       </html>
 
-<?php
-  // create short variable name
-  //$document_root = $_SERVER['DOCUMENT_ROOT'];
-  //$file_name = $_FILES["fileToUpload"]["name"];
-?>
+
+
 
 <!-- Store data from text-box to a file -->
 <?php
- $path = 'data.txt';
- if (isset($_POST['photoname_']) && isset($_POST['date_']) && isset($_POST['photographer_']) && isset($_POST['location_'])) {
-    $fh = fopen($path,"a+");
-    $string = $_POST['photoname_'].' - '.$_POST['date_'].' - '.$_POST['photographer_'].' - '.$_POST['location_'];
-    fwrite($fh,$string); // Write information to the file
-    fclose($fh); // Close the file
- }
+
+  $outputstring = $name." ".$date."\t".$photographer." ". $address."\n";
+  @$fp = fopen("$document_root/data.txt", 'ab');
+
+  
+
+  if (!$fp) {
+    echo "<p><strong> Your request could not be processed at this time.
+          Please try again later.</strong></p>";
+    exit;
+  }
+
+  flock($fp, LOCK_EX);
+  fwrite($fp, $outputstring, strlen($outputstring));
+  flock($fp, LOCK_UN);
+  fclose($fp);
+
+  echo "<p>data written.</p>";
+
 ?>
+
+
 
 <!-- Sort strings from the file and output them to html -->
 
@@ -56,7 +79,7 @@
 
     $counter = 1;
 
-    $strings = file("$document_root/data.txt")
+    $strings = file("data.txt")
 
     // count the number of photos in the array
     $number_of_photos = count($strings);
@@ -86,11 +109,17 @@
 
   <?php
     //Sorting by id
-    $('.sorting').click(function()){
+    // $('.sorting').click(function()){
 
-      $('#id').text($(this).text())
+    //   $('#id').text($(this).text())
 
-      var i = $this.text;
+    //   var i = $this.text;
+
+
+    $dom = new DomDocument();
+    @$dom->loadHTML($dom);
+
+    
 
       if(i == 'name'){
 
