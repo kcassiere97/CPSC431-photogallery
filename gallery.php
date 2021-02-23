@@ -100,7 +100,7 @@
    
 <?php
     //Add each lines from data file to an array
-    $filename = 'data.txt'
+    $filename = "data.txt";
     $fp = @fopen($filename, "r");
     if ($fp) {
       $arr = explode("\n", fread($fp, filesize($filename)));
@@ -148,9 +148,7 @@
 
 
     }
-
-
-
+    
  echo "I think it works"
  
 ?>
