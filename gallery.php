@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="color.css">
 
     </head>
-  
         <body class="container">
           <div class="center">
             <h1 class ="p1">View All Photos</h1>
@@ -66,37 +65,93 @@
 
 ?>
 
-
+<!-- made made a photo class, put all the photo objs in an array and wrote a 
+function using the php usort function that sorts by properties of those objects,
+ passed it the array and boom sorted -->
 
 <!-- Sort strings from the file and output them to html -->
 
 <?php
-    $path = "data.txt";
-    // $photoname_ = trim($_POST['photoname_']);
-    // $email = trim($_POST['date_']);
-    // $name = trim($_POST['photographer_']);
-    // $location = trim($_POST['location_']);
+  
+    class gallery {
 
-    $counter = 1;
+      $myArray = array($name, $date, $photographer, $location);
 
-    $strings = file("data.txt")
+      function compare($myArray){
 
-    // count the number of photos in the array
-    $number_of_photos = count($strings);
+        while(count($myArray) != NULL){
+
+          if($myArray[i] == 'name'){
+
+            array_sort($myArray, 'name', SORT_ASC));
+    
+          }
+          if($myArray[i] == 'location'){
+    
+            array_sort($myArray, 'location', SORT_ASC));
+    
+          }
+    
+          if($myArray[i] == 'dateTaken'){
+    
+            array_sort($myArray, 'dateTaken', SORT_ASC));
+          }
+    
+          if($myArray[i] == 'photographer'){
+    
+            array_sort($myArray, 'photographer', SORT_ASC));
+    
+          }
+        }
+
+      }
 
 
-    // Check if number of photos are empty
-    if ($number_of_photos == 0) {
-      echo "<p><strong>No photos.<br />
-            Please try again later.</strong></p>";
-    } else {
+
+
+
+
+
+
       
-      $counter = 1;
-
     }
 
-
   ?>
+
+
+
+<!-- extra -->
+
+<!-- // $path = "data.txt";
+    // // $photoname_ = trim($_POST['photoname_']);
+    // // $email = trim($_POST['date_']);
+    // // $name = trim($_POST['photographer_']);
+    // // $location = trim($_POST['location_']);
+
+    // $counter = 1;
+
+    // $strings = file("data.txt")
+
+    // // count the number of photos in the array
+    // $number_of_photos = count($strings);
+
+
+    // // Check if number of photos are empty
+    // if ($number_of_photos == 0) {
+    //   echo "<p><strong>No photos.<br />
+    //         Please try again later.</strong></p>";
+    // } else {
+      
+    //   $counter = 1;
+
+    // } -->
+
+
+
+
+
+
+
    
 <?php
     //Add each lines from data file to an array
@@ -107,48 +162,3 @@
     }
 ?>
 
-  <?php
-    //Sorting by id
-    // $('.sorting').click(function()){
-
-    //   $('#id').text($(this).text())
-
-    //   var i = $this.text;
-
-
-    $dom = new DomDocument();
-    @$dom->loadHTML($dom);
-
-    
-
-      if(i == 'name'){
-
-        array_sort($arr, 'name', SORT_ASC));
-
-      }
-      if(i == 'location'){
-
-        array_sort($arr, 'location', SORT_ASC));
-
-      }
-
-      if(i == 'dateTaken'){
-
-        array_sort($arr, 'dateTaken', SORT_ASC));
-
-
-      }
-
-      if(i == 'photographer'){
-
-        array_sort($arr, 'photographer', SORT_ASC));
-
-
-      }
-
-
-    }
-    
- echo "I think it works"
- 
-?>
