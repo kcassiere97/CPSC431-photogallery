@@ -9,39 +9,6 @@
   $document_root = $_SERVER['DOCUMENT_ROOT'];
 ?>
 
-
-<html>
-    <meta charset="utf-8">
-    <head>
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="color.css">
-
-    </head>
-        <body class="container">
-          <div class="center">
-            <h1 class ="p1">View All Photos</h1>
-            <form action="gallery.php">
-              <label for="sorting" class ="p1">Sort By:</label>
-              <select name="sorting" id="sorting">
-                <option value="name">Name</option>
-                <option value="dateTaken">Date Taken</option>
-                <option value="location">Location</option>
-                <option value="Photographer">Photographer</option>
-              </select>           
-              <input type="submit" value="Submit">
-            </form>  
-            <form action="index.html" method = "post">
-            <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button> 
-            </form>  
-      </div>
-      </body>
-      </html>
-
-
-
-
 <!-- Store data from text-box to a file -->
 <?php
 
@@ -65,58 +32,94 @@
 
 ?>
 
+<!-- read files from text file -->
+<?php
+    //Add each lines from data file to an array
+    $filename = "data.txt";
+    $fp = @fopen($filename, "r");
+    if ($fp) {
+      $my_arr = explode("\n", fread($fp, filesize($filename)));
+    }
+    // Sort array 
+    rsort($my_arr);
+    display()
+    
+?>
+
+<!-- //display to html -->
+<script>
+function display(){
+                for (var i = 0; i < $my_arr.length; i++) {
+                        var all = document.querySelectorAll("[id='container']");
+              
+                         // get the size of the inner array
+                         var innerArrayLength = Object.keys(my_arr[i]).length;
+             
+                
+                        // loop the inner array
+                        for (var j = 0; j < innerArrayLength; j++) {
+                            
+                            var imgValue = my_arr[i].img;
+                            var nameValue = my_arr[i].name;
+                            var photographerValue = my_arr[i].photographer;
+                            var dateValue = my_arr[i].date;
+                            var locationValue = my_arr[i].location;
+
+                    
+                            all[i].querySelector("#name").innerHTML = nameValue;
+                            all[i].querySelector("#date").innerHTML = dateValue;
+                            all[i].querySelector("#location").innerHTML = locationValue;
+                            all[i].querySelector("#photographer").innerHTML = photographerValue;
+                            all[i].querySelector("#img").src = 'uploads/' + imgValue;
+                        
+                        }
+               
+                
+                  }
+            }
+</script>
+
+
+
+
+<html>
+    <meta charset="utf-8">
+    <head>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="color.css">
+
+    </head>
+        <body class="container">
+          <div class="center">
+            <h1 class ="p1">View All Photos</h1>
+            <form action="gallery.php">
+              <label for="sorting" class ="p1">Sort By:</label>
+              <select name="sorting" id="sorting">
+                <option value="name">Name</option>
+                <option value="date">Date Taken</option>
+                <option value="location">Location</option>
+                <option value="Photographer">Photographer</option>
+              </select>           
+              <input type="submit" value="Submit">
+            </form>  
+            <form action="index.html" method = "post">
+            <button type="uploadPhoto" class= "btn btn-primary" name="img">Upload Photo</button> 
+            </form>  
+      </div>
+      </body>
+      </html>
+
+
+
 <!-- made made a photo class, put all the photo objs in an array and wrote a 
 function using the php usort function that sorts by properties of those objects,
  passed it the array and boom sorted -->
 
 <!-- Sort strings from the file and output them to html -->
 
-<?php
-  
-    class gallery {
-
-      $myArray = array($name, $date, $photographer, $location);
-
-      function compare($myArray){
-
-        while(count($myArray) != NULL){
-
-          if($myArray[i] == 'name'){
-
-            array_sort($myArray, 'name', SORT_ASC));
-    
-          }
-          if($myArray[i] == 'location'){
-    
-            array_sort($myArray, 'location', SORT_ASC));
-    
-          }
-    
-          if($myArray[i] == 'dateTaken'){
-    
-            array_sort($myArray, 'dateTaken', SORT_ASC));
-          }
-    
-          if($myArray[i] == 'photographer'){
-    
-            array_sort($myArray, 'photographer', SORT_ASC));
-    
-          }
-        }
-
-      }
-
-
-
-
-
-
-
-
-      
-    }
-
-  ?>
+<!--  -->
 
 
 
@@ -145,20 +148,4 @@ function using the php usort function that sorts by properties of those objects,
     //   $counter = 1;
 
     // } -->
-
-
-
-
-
-
-
-   
-<?php
-    //Add each lines from data file to an array
-    $filename = "data.txt";
-    $fp = @fopen($filename, "r");
-    if ($fp) {
-      $arr = explode("\n", fread($fp, filesize($filename)));
-    }
-?>
 
