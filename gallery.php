@@ -6,6 +6,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="color.css">
 
+    <style type="text/css">
+    table, th, td {
+      border-collapse: collapse;
+      border: 1px solid black;
+      padding: 6px;
+    }
+
+    th {
+      background: #ccccff;      
+    }
+    </style>
+
+
     </head>
   
         <body class="container">
@@ -23,10 +36,11 @@
             </form>  
             <form action="index.html" method = "post">
             <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button> 
-            </form>  
+            </form> 
+
       </div>
       </body>
-      </html>
+  </html>
 
 <?php
   // create short variable name
@@ -84,11 +98,11 @@
     }
 ?>
 
-  <?php
+  <script>
     //Sorting by id
-    //$('.sorting').click(function()){
+    $('.sorting').click(function()){
 
-      //$('#id').text($(this).text())
+      $('#id').text($(this).text())
 
       var i = $this.text;
 
@@ -121,5 +135,15 @@
     }
     
  echo "I think it works"
- 
-?>
+
+ echo "<table>\n";
+      echo "<tr>
+              <th>Order Date</th>
+              <th>Tires</th>
+              <th>Oil</th>
+              <th>Spark Plugs</th>
+              <th>Total</th>
+              <th>Address</th>
+            <tr>";
+
+ </script>
