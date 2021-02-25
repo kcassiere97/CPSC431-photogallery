@@ -1,3 +1,15 @@
+<?php
+  // create short variable names
+  $name = $_POST['photoname_'];
+  $date = (int) $_POST['date_'];
+  $date = date('H:i, jS F Y');
+  $photographer = $_POST['photographer_'];
+  //$location = $_POST['location_']
+  $location = preg_replace('/\t|\R/',' ',$_POST['location_']);
+  $document_root = $_SERVER['DOCUMENT_ROOT'];
+?>
+
+
 <html>
     <meta charset="utf-8">
     <head>
@@ -20,7 +32,6 @@
 
 
     </head>
-  
         <body class="container">
           <div class="center">
             <h1 class ="p1">View All Photos</h1>
@@ -42,52 +53,127 @@
       </body>
   </html>
 
-<?php
-  // create short variable name
-  //$document_root = $_SERVER['DOCUMENT_ROOT'];
-  //$file_name = $_FILES["fileToUpload"]["name"];
-?>
+
+
 
 <!-- Store data from text-box to a file -->
 <?php
- $path = 'data.txt';
- if (isset($_POST['photoname_']) && isset($_POST['date_']) && isset($_POST['photographer_']) && isset($_POST['location_'])) {
-    $fh = fopen($path,"a+");
-    $string = $_POST['photoname_'].' - '.$_POST['date_'].' - '.$_POST['photographer_'].' - '.$_POST['location_'];
-    fwrite($fh,$string); // Write information to the file
-    fclose($fh); // Close the file
- }
+
+  $outputstring = $name." ".$date."\t".$photographer." ". $address."\n";
+  @$fp = fopen("$document_root/data.txt", 'ab');
+
+  
+
+  if (!$fp) {
+    echo "<p><strong> Your request could not be processed at this time.
+          Please try again later.</strong></p>";
+    exit;
+  }
+
+  flock($fp, LOCK_EX);
+  fwrite($fp, $outputstring, strlen($outputstring));
+  flock($fp, LOCK_UN);
+  fclose($fp);
+
+  echo "<p>data written.</p>";
+
 ?>
+
+<!-- made made a photo class, put all the photo objs in an array and wrote a 
+function using the php usort function that sorts by properties of those objects,
+ passed it the array and boom sorted -->
 
 <!-- Sort strings from the file and output them to html -->
 
 <?php
-    $path = "data.txt";
-    // $photoname_ = trim($_POST['photoname_']);
-    // $email = trim($_POST['date_']);
-    // $name = trim($_POST['photographer_']);
-    // $location = trim($_POST['location_']);
+  
+    class gallery {
 
-    $counter = 1;
+      $myArray = array($name, $date, $photographer, $location);
 
-    $strings = file("data.txt");
+      function compare($myArray){
 
-    // count the number of photos in the array
-    $number_of_photos = count($strings);
+        while(count($myArray) != NULL){
+
+          if($myArray[i] == 'name'){
+
+            array_sort($myArray, 'name', SORT_ASC));
+    
+          }
+          if($myArray[i] == 'location'){
+    
+            array_sort($myArray, 'location', SORT_ASC));
+    
+          }
+    
+          if($myArray[i] == 'dateTaken'){
+    
+            array_sort($myArray, 'dateTaken', SORT_ASC));
+          }
+    
+          if($myArray[i] == 'photographer'){
+    
+            array_sort($myArray, 'photographer', SORT_ASC));
+    
+          }
+        }
+
+      }
 
 
-    // Check if number of photos are empty
-    if ($number_of_photos == 0) {
-      echo "<p><strong>No photos.<br />
-            Please try again later.</strong></p>";
-    } else {
+
+
+
+
+
+
       
-      $counter = 1;
-
     }
 
+<<<<<<< HEAD
+  <script>
+    //Sorting by id
+    $('.sorting').click(function()){
 
+      $('#id').text($(this).text())
+=======
   ?>
+
+>>>>>>> 56ab670ac76f0eb462b77d91fa93eb7ed55a17fa
+
+
+<!-- extra -->
+
+<!-- // $path = "data.txt";
+    // // $photoname_ = trim($_POST['photoname_']);
+    // // $email = trim($_POST['date_']);
+    // // $name = trim($_POST['photographer_']);
+    // // $location = trim($_POST['location_']);
+
+    // $counter = 1;
+
+    // $strings = file("data.txt")
+
+    // // count the number of photos in the array
+    // $number_of_photos = count($strings);
+
+
+    // // Check if number of photos are empty
+    // if ($number_of_photos == 0) {
+    //   echo "<p><strong>No photos.<br />
+    //         Please try again later.</strong></p>";
+    // } else {
+      
+    //   $counter = 1;
+
+    // } -->
+
+
+
+
+
+
+
    
 <?php
     //Add each lines from data file to an array
@@ -96,43 +182,7 @@
     if ($fp) {
       $arr = explode("\n", fread($fp, filesize($filename)));
     }
-?>
-
-  <script>
-    //Sorting by id
-    $('.sorting').click(function()){
-
-      $('#id').text($(this).text())
-
-      var i = $this.text;
-
-      if(i == 'name'){
-
-        array_sort($arr, 'name', SORT_ASC));
-
-      }
-      if(i == 'location'){
-
-        array_sort($arr, 'location', SORT_ASC));
-
-      }
-
-      if(i == 'dateTaken'){
-
-        array_sort($arr, 'dateTaken', SORT_ASC));
-
-
-      }
-
-      if(i == 'photographer'){
-
-        array_sort($arr, 'photographer', SORT_ASC));
-
-
-      }
-
-
-    }
+<<<<<<< HEAD
     
  echo "I think it works"
 
@@ -147,3 +197,7 @@
             <tr>";
 
  </script>
+=======
+?>
+
+>>>>>>> 56ab670ac76f0eb462b77d91fa93eb7ed55a17fa
