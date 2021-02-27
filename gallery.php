@@ -1,3 +1,57 @@
+<?php
+// Retreiving user's image
+  if (isset($_POST['submit'])) {
+        // initializing variables
+        $file = $_FILES['file'];
+
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileError = $_FILES['file']['error'];
+        $fileType = $_FILES['file']['type'];
+        $fileDestination ="user_uploads/".$fileName;
+
+        move_uploaded_file($fileTmpName, $fileDestination);
+        /*$fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        // files allowed to upload
+        $allowed = array('jpg', 'jpeg', 'png');
+
+        // check if file has proper extentions 
+        if (in_array($fileActualExt, $allowed)){
+            if ($fileError === 0) {
+                if ($fileSize < 100000000) {
+                    $fileNameNew = uniqid('', true).".".$fileActualExt;
+                    $fileDestination = 'user_uploads/'.$fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
+                    header("Location: gallery.php?uploadsuccess");
+                } else {
+                    echo "File too thicc";
+                }
+            } else { 
+                echo "There was an error uploading your file. rip";
+            }
+        } else {
+            echo "Sorry Bruv, you can't upload files of this type";
+        }*/
+
+    // Storing user's image details to data.txt
+    extract($_REQUEST);
+    $file=fopen("data.txt","a");
+
+    fwrite($file,"Photo Name: ");
+    fwrite($file, $photoname ."\n");
+    fwrite($file, "Date Taken: ");
+    fwrite($file, $datetaken . "\n");
+    fwrite($file, "Photographer: ");
+    fwrite($file, $photographer ."\n");
+    fwrite($file, "Location: ");
+    fwrite($file, $location ."\n");
+    fclose($file);
+    }
+?>  
+
 <!DOCTYPE html>
 <html lang = "en">
   <head>
@@ -32,8 +86,8 @@
         $folder = "user_uploads/";
         if (is_dir($folder)) {
           if ($open = opendir($folder)) {
-            while (($file = readdir(open)) !=false) {
-              //if ($file == '.' || $file == '..') continue;
+            while ($file = readdir($open)) {
+              if ($file == '.' || $file == '..') continue;
 
               echo ' <img src = "user_uploads/'.$file.'" width = "150" height = 150 >';
             }
@@ -53,56 +107,6 @@
     </div>
 </body>
 </html> 
-
-<?php
-  if (isset($_POST['submit'])) {
-        // initializing variables
-        $file = $_FILES['file'];
-
-        $fileName = $_FILES['file']['name'];
-        $fileTmpName = $_FILES['file']['tmp_name'];
-        $fileSize = $_FILES['file']['size'];
-        $fileError = $_FILES['file']['error'];
-        $fileType = $_FILES['file']['type'];
-
-        $fileExt = explode('.', $fileName);
-        $fileActualExt = strtolower(end($fileExt));
-
-        // files allowed to upload
-        $allowed = array('jpg', 'jpeg', 'png');
-
-        // check if file has proper extentions 
-        if (in_array($fileActualExt, $allowed)){
-            if ($fileError === 0) {
-                if ($fileSize < 100000000) {
-                    $fileNameNew = uniqid('', true).".".$fileActualExt;
-                    $fileDestination = 'user_uploads/'.$fileNameNew;
-                    move_uploaded_file($fileTmpName, $fileDestination);
-                    header("Location: gallery.php?uploadsuccess");
-                } else {
-                    echo "File too thicc";
-                }
-            } else { 
-                echo "There was an error uploading your file. rip";
-            }
-        } else {
-            echo "Sorry Bruv, you can't upload files of this type";
-        }
-
-    extract($_REQUEST);
-    $file=fopen("data.txt","a");
-
-    fwrite($file,"Photo Name: ");
-    fwrite($file, $photoname ."\n");
-    fwrite($file, "Date Taken: ");
-    fwrite($file, $datetaken . "\n");
-    fwrite($file, "Photographer: ");
-    fwrite($file, $photographer ."\n");
-    fwrite($file, "Location: ");
-    fwrite($file, $location ."\n");
-    fclose($file);
-    }
-?>  
 
 
 <?php
