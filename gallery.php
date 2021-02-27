@@ -1,173 +1,189 @@
-<html>
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <title>Viewing Your Photos</title>
     <meta charset="utf-8">
-    <head>
-    
+    <meta name="viewport" content="width=dvice-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="color.css">
+  </head>
+  
+  <body class="container">
+    <div class="center">
+      <h1 class ="p1">View All Photos</h1>
+      <form action="gallery.php">
+        <label for="sorting" class ="p1">Sort By:</label>
+        <select name="sorting" id="sorting">
+          <option value="name">Name</option>
+          <option value="dateTaken">Date Taken</option>
+          <option value="location">Location</option>
+          <option value="Photographer">Photographer</option>
+        </select>          
+        <input type="submit" value="Submit">
+      </form>  
+      <form action="index.php" method = "POST">
+        <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button> 
+      </form> 
+      <table style = "width:100%">
+      <tr>
+        <?php
+        $folder = "user_uploads/";
+        if (is_dir($folder)) {
+          if ($open = opendir($folder)) {
+            while (($file = readdir(open)) !=false) {
+              //if ($file == '.' || $file == '..') continue;
+
+              echo ' <img src = "user_uploads/'.$file.'" width = "150" height = 150 >';
+            }
+            closedir($open);
+          }
+        }
+        $file = "data.txt";
+        $document = file_get_contents($file);
+        $lines = explode("\n",$document);
+        foreach($lines as $newline){
+          echo '<br>'. $newline . '<br>';
+        }
+        ?>
+      </tr>
+
+      </table>
+    </div>
+</body>
+</html> 
+
+<?php
+  if (isset($_POST['submit'])) {
+        // initializing variables
+        $file = $_FILES['file'];
+
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileError = $_FILES['file']['error'];
+        $fileType = $_FILES['file']['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        // files allowed to upload
+        $allowed = array('jpg', 'jpeg', 'png');
+
+        // check if file has proper extentions 
+        if (in_array($fileActualExt, $allowed)){
+            if ($fileError === 0) {
+                if ($fileSize < 100000000) {
+                    $fileNameNew = uniqid('', true).".".$fileActualExt;
+                    $fileDestination = 'user_uploads/'.$fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
+                    header("Location: gallery.php?uploadsuccess");
+                } else {
+                    echo "File too thicc";
+                }
+            } else { 
+                echo "There was an error uploading your file. rip";
+            }
+        } else {
+            echo "Sorry Bruv, you can't upload files of this type";
+        }
+
+    extract($_REQUEST);
+    $file=fopen("data.txt","a");
+
+    fwrite($file,"Photo Name: ");
+    fwrite($file, $photoname ."\n");
+    fwrite($file, "Date Taken: ");
+    fwrite($file, $datetaken . "\n");
+    fwrite($file, "Photographer: ");
+    fwrite($file, $photographer ."\n");
+    fwrite($file, "Location: ");
+    fwrite($file, $location ."\n");
+    fclose($file);
+    }
+?>  
+
+
+<?php
+/*
+    if (isset($_POST['submit'])) {
+        // initializing variables
+        $file = $_FILES['file'];
+
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileError = $_FILES['file']['error'];
+        $fileType = $_FILES['file']['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        // files allowed to upload
+        $allowed = array('jpg', 'jpeg', 'png');
+
+        // check if file has proper extentions and storing the file into user_uploads folder
+        if (in_array($fileActualExt, $allowed)){
+            if ($fileError === 0) {
+                if ($fileeSize < 100000000) {
+                    $fileNameNew = uniqid('', true).".".$fileActualExt;
+                    $fileDestination = 'user_uploads/'.$fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
+                    header("Location: gallery.php?uploadsuccess");
+                } else {
+                    echo "File too thicc";
+                }
+            } else { 
+                echo "There was an error uploading your file. rip";
+            }
+        } else {
+            echo "Sorry Bruv, you can't upload files of this type";
+        }
+    }
+
+    // Storing user's input to data.txt 
+    extract($_REQUEST);
+    $file=fopen("data.txt","a");
+
+    fwrite($file,"Photo Name: ");
+    fwrite($file, $photoname ."\n");
+    fwrite($file, "Date Taken: ");
+    fwrite($file, $datetaken . "\n");
+    fwrite($file, "Photographer: ");
+    fwrite($file, $photographer ."\n");
+    fwrite($file, "Location: ");
+    fwrite($file, $location ."\n");
+    fclose($file);
+    header("Location: gallery.php");
+?>  
+
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <title>Viewing Your Photos</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="color.css">
-
-    <style type="text/css">
-    table, th, td {
-      border-collapse: collapse;
-      border: 1px solid black;
-      padding: 6px;
-    }
-
-    th {
-      background: #ccccff;      
-    }
-    </style>
-
-
-    </head>
-        <body class="container">
-          <div class="center">
-            <h1 class ="p1">View All Photos</h1>
-            <form action="gallery.php">
-              <label for="sorting" class ="p1">Sort By:</label>
-              <select name="sorting" id="sorting">
-                <option value="name">Name</option>
-                <option value="dateTaken">Date Taken</option>
-                <option value="location">Location</option>
-                <option value="Photographer">Photographer</option>
-              </select>           
-              <input type="submit" value="Submit">
-            </form>  
-            <form action="index.html" method = "post">
-            <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button> 
-            </form> 
-
-      </div>
-      </body>
-  </html>
-
-<?php
-  // create short variable names
-  $name = $_POST['photoname_'];
-  $date = (int) $_POST['date_'];
-  $date = date('H:i, jS F Y');
-  $photographer = $_POST['photographer_'];
-  //$location = $_POST['location_']
-  $location = preg_replace('/\t|\R/',' ',$_POST['location_']);
-  $document_root = $_SERVER['DOCUMENT_ROOT'];
-?>
-
-<!-- Store data from text-box to a file -->
-<?php
-
-  $outputstring = $name . " " . $date . "\t" . $photographer . " " . $location . "\n";
-  @$fp = fopen("$document_root/data.txt", 'ab');
-
+  </head>
   
-
-  if (!$fp) {
-    echo "<p><strong> Your request could not be processed at this time.
-          Please try again later.</strong></p>";
-    exit;
-  }
-
-  flock($fp, LOCK_EX);
-  fwrite($fp, $outputstring, strlen($outputstring));
-  flock($fp, LOCK_UN);
-  fclose($fp);
-
-  echo "<p>data written.</p>";
-
-?>
-
-<!-- made made a photo class, put all the photo objs in an array and wrote a 
-function using the php usort function that sorts by properties of those objects,
- passed it the array and boom sorted -->
-
-<!-- Sort strings from the file and output them to html -->
-
-<?php
-
-  $myArray = array($name, $date, $photographer, $location);
-    
-  class gallery {
-
-      function compare($myArray){
-
-        while(count($myArray) != NULL){
-
-          if($myArray[i] == 'name'){
-
-            array_sort($myArray, 'name', SORT_ASC);
-    
-          }
-          if($myArray[i] == 'location'){
-    
-            array_sort($myArray, 'location', SORT_ASC);
-    
-          }
-    
-          if($myArray[i] == 'dateTaken'){
-    
-            array_sort($myArray, 'dateTaken', SORT_ASC);
-          }
-    
-          if($myArray[i] == 'photographer'){
-    
-            array_sort($myArray, 'photographer', SORT_ASC);
-    
-          }
-        }
-
-      }
-
-
-
-
-
-
-
-
-      
-    }
-
-  ?>
-
-
-
-<!-- extra -->
-
-<!-- // $path = "data.txt";
-    // // $photoname_ = trim($_POST['photoname_']);
-    // // $email = trim($_POST['date_']);
-    // // $name = trim($_POST['photographer_']);
-    // // $location = trim($_POST['location_']);
-
-    // $counter = 1;
-
-    // $strings = file("data.txt")
-
-    // // count the number of photos in the array
-    // $number_of_photos = count($strings);
-
-
-    // // Check if number of photos are empty
-    // if ($number_of_photos == 0) {
-    //   echo "<p><strong>No photos.<br />
-    //         Please try again later.</strong></p>";
-    // } else {
-      
-    //   $counter = 1;
-
-    // } -->
-
-
-
-
-
-
-
-   
-<?php
-    //Add each lines from data file to an array
-    $filename = "data.txt";
-    $fp = @fopen($filename, "r");
-    if ($fp) {
-      $arr = explode("\n", fread($fp, filesize($filename)));
-    }
-?>
+  <body class="container">
+    <div class="center">
+      <h1 class ="p1">View All Photos</h1>
+      <form action="gallery.php">
+        <label for="sorting" class ="p1">Sort By:</label>
+        <select name="sorting" id="sorting">
+          <option value="userName">Name</option>
+          <option value="dateTaken">Date Taken</option>
+          <option value="location">Location</option>
+          <option value="photographer">Photographer</option>
+        </select>          
+        <input type="submit" value="Submit">
+      </form>  
+      <form action="index.html" method = "POST">
+        <button type="uploadPhoto" class= "btn btn-primary" name="uploadPhoto">Upload Photo</button> 
+      </form> 
+    </div>
+  </body>
+</html>   */ 
