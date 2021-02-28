@@ -49,6 +49,9 @@
     fwrite($file, "Location: ");
     fwrite($file, $location ."\n");
     fclose($file);
+
+    $user_data = array($photoname, $datetaken, $photographer, $location, "user_uploads/'.$file.'");
+  
     }
 ?>  
 
@@ -82,32 +85,59 @@
       </form> 
       <table style = "width:100%">
       <tr>
+      <td>
+      <!-- printing out the user's input into table -->
         <?php
-        $folder = "user_uploads/";
-        if (is_dir($folder)) {
-          if ($open = opendir($folder)) {
-            while ($file = readdir($open)) {
-              if ($file == '.' || $file == '..') continue;
-
-              echo ' <img src = "user_uploads/'.$file.'" width = "150" height = 150 >';
+        foreach($user_data as $x){
+          $folder = "user_uploads/";
+          if (is_dir($folder)) {
+            if ($open = opendir($folder)) {
+              while ($file = readdir($open)) {
+                if ($file == '.' || $file == '..') continue;
+                echo ' <img src = "user_uploads/'.$file.'" width = "150" height = 150 >';
+              }
+             closedir($open);
             }
-            closedir($open);
+          } 
+          $file = "data.txt";
+          $document = file_get_contents($file);
+          $lines = explode("\n",$document);
+          foreach($lines as $newline){
+            echo '<br>'. $newline . '<br>';
           }
         }
-        $file = "data.txt";
-        $document = file_get_contents($file);
-        $lines = explode("\n",$document);
-        foreach($lines as $newline){
-          echo '<br>'. $newline . '<br>';
-        }
         ?>
-      </tr>
-
+            </td>
+            </tr>
       </table>
     </div>
 </body>
 </html> 
 
+<!-- Sort strings from the file and output them to html -->
+
+<?php
+/*
+  $user_data = array($name, $datetaken, $photographer, $location);
+  class gallery {
+      function compare($user_data){
+        while(count($user_data) != NULL){
+          if($user_data[i] == 'name'){
+            array_sort($user_data, 'name', SORT_ASC);
+          }
+          if($user_data[i] == 'location'){
+            array_sort($user_data, 'location', SORT_ASC);
+          }
+          if($user_data[i] == 'dateTaken'){
+            array_sort($user_data, 'dateTaken', SORT_ASC);
+          }
+          if($user_data[i] == 'photographer'){
+            array_sort($user_data, 'photographer', SORT_ASC);
+          }
+        }
+      }
+    }*/
+  ?>
 
 <?php
 /*
