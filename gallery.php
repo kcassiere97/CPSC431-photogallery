@@ -39,7 +39,8 @@
     // Storing user's image details to data.txt
     extract($_REQUEST);
     $file=fopen("data.txt","a");
-
+    
+    //fwrite($file, $fileNameNew);
     fwrite($file,"Photo Name: ");
     fwrite($file, $photoname ."\n");
     fwrite($file, "Date Taken: ");
@@ -50,8 +51,8 @@
     fwrite($file, $location ."\n");
     fclose($file);
 
-    $user_data = array($photoname, $datetaken, $photographer, $location, "user_uploads/'.$file.'");
-  
+    //$user_data = array($photoname, $datetaken, $photographer, $location, "user_uploads/'.$file.'");
+    $user_data = array($photoname);
     }
 ?>  
 
@@ -88,7 +89,7 @@
       <td>
       <!-- printing out the user's input into table -->
         <?php
-        foreach($user_data as $x){
+        /*foreach($user_data as $x){
           $folder = "user_uploads/";
           if (is_dir($folder)) {
             if ($open = opendir($folder)) {
@@ -99,15 +100,33 @@
              closedir($open);
             }
           } 
+*/
           $file = "data.txt";
           $document = file_get_contents($file);
           $lines = explode("\n",$document);
-          foreach($lines as $newline){
-            echo '<br>'. $newline . '<br>';
+         // foreach($lines as $newline){
+            foreach($user_data as $newline){
+            $folder = "user_uploads/";
+            if (is_dir($folder)) {
+              if ($open = opendir($folder)) {
+                while ($file = readdir($open)) {
+                  if ($file == '.' || $file == '..') continue;
+                  echo ' <img src = "user_uploads/'.$file.'" width = "150" height = 150 >';
+                  echo '<br>'. "Photo Name: " .  $photoname . '<br>';
+                  echo '<br>'. "Date Taken: " . $datetaken . '<br>';
+                  echo '<br>'. "Photographer: " . $photographer . '<br>';
+                  echo '<br>'. "Location: " . $location . '<br>';
+                }
+               closedir($open);
+              }
+            } 
+          //  echo $lines;
+            
+           // echo '<br>'. $newline . '<br>';
           }
-        }
+        
         ?>
-            </td>
+        </td>
             </tr>
       </table>
     </div>
