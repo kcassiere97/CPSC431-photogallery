@@ -41,37 +41,51 @@
       </body>
   </html>
 
-<?php
-  // create short variable names
-  $name = $_POST['photoname_'];
-  $date = (int) $_POST['date_'];
-  $date = date('H:i, jS F Y');
-  $photographer = $_POST['photographer_'];
-  //$location = $_POST['location_']
-  $location = preg_replace('/\t|\R/',' ',$_POST['location_']);
-  $document_root = $_SERVER['DOCUMENT_ROOT'];
-?>
 
 <!-- Store data from text-box to a file -->
 <?php
 
-  $outputstring = $name . " " . $date . "\t" . $photographer . " " . $location . "\n";
-  @$fp = fopen("$document_root/data.txt", 'ab');
+  if (isset($_POST['submit'])) {
+    // initializing variables
+    $file = $_FILES['file'];
 
-  
+    $fileName = $_FILES['file']['name'];
+    $fileTmpName = $_FILES['file']['tmp_name'];
+    $fileSize = $_FILES['file']['size'];
+    $fileError = $_FILES['file']['error'];
+    $fileType = $_FILES['file']['type'];
+    $fileDestination ="uploads/".$fileName;
 
-  if (!$fp) {
-    echo "<p><strong> Your request could not be processed at this time.
-          Please try again later.</strong></p>";
-    exit;
-  }
 
-  flock($fp, LOCK_EX);
-  fwrite($fp, $outputstring, strlen($outputstring));
-  flock($fp, LOCK_UN);
-  fclose($fp);
 
-  echo "<p>data written.</p>";
+
+    //Extract photo files to $photoFileNames
+      // $fileNames = array();
+      // $photoFileNames = array();
+      // $fileNames = scandir($document_root);
+      // for($i = 0; $i < count($fileNames); $i++){
+
+      //   if(preg_match('/^.+\.jpg|^.+\.png$/', $fileNames[$i], $matches))
+      //   array_push($photoFileNames, $matches[0]);
+    
+      // }
+
+      move_uploaded_file($fileTmpName, $fileDestination);
+
+      // Storing user's image details to data.txt
+      extract($_REQUEST);
+      $file=fopen("data.txt","a");
+      
+      //fwrite($file, $fileNameNew);
+      fwrite($file,"Photo Name: ");
+      fwrite($file, $photoname ."\n");
+      fwrite($file, "Date Taken: ");
+      fwrite($file, $datetaken . "\n");
+      fwrite($file, "Photographer: ");
+      fwrite($file, $photographer ."\n");
+      fwrite($file, "Location: ");
+      fwrite($file, $location ."\n");
+      fclose($file);
 
 ?>
 
@@ -82,92 +96,53 @@ function using the php usort function that sorts by properties of those objects,
 <!-- Sort strings from the file and output them to html -->
 
 <?php
+      //Read in the entire file
+      //Each order becomes an element in the array
+      $data= file("data.txt");
+    
+      // count the number of orders in the array
+      $number_of_pics = count($data);
+    
+      if ($number_of_pics == 0) {
+        echo "<p><strong>No Pictures.<br />
+              Please try again later.</strong></p>";
+      } 
 
-  $myArray = array($name, $date, $photographer, $location);
-    
-  class gallery {
 
-      function compare($myArray){
+      if($number_of_pics){
 
-        while(count($myArray) != NULL){
+        echo "<table>";
 
-          if($myArray[i] == 'name'){
+        foreach ($data as $d){
 
-            array_sort($myArray, 'name', SORT_ASC);
-    
-          }
-          if($myArray[i] == 'location'){
-    
-            array_sort($myArray, 'location', SORT_ASC);
-    
-          }
-    
-          if($myArray[i] == 'dateTaken'){
-    
-            array_sort($myArray, 'dateTaken', SORT_ASC);
-          }
-    
-          if($myArray[i] == 'photographer'){
-    
-            array_sort($myArray, 'photographer', SORT_ASC);
-    
-          }
+         list($photoname, $datetaken, $photographer, $location, "uploads/'.$file.'") = explode(" ", $d);
+
+         $file = trim($file);
+         $datetaken = trim($datetaken)
+         $location = trim($location)
+         $photographer = trim($photographer)
+
+         echo "<tr>";
+         echo "<th>Picture: </th>";
+         echo "<th>Date:</th>";
+         echo "<th>Location: </th>";
+         echo "<th>Photographer:</th>";
+         echo "</tr>";
+
+
+         echo "<tr>"
+         echo "<td><img src = "uploads/'.$file.'" width = 150 height = 150></td>"
+         echo "<td style=\"text-align: right;\">$datetaken</td>"
+         echo "<td style=\"text-align: right;\">$location</td>"   
+         echo "<td style=\"text-align: right;\">$photographer</td>"
+         echo "</tr>"
+
         }
 
+         echo "</table>";
+
       }
-
-
-
-
-
-
-
-
-      
-    }
-
-  ?>
-
-
-
-<!-- extra -->
-
-<!-- // $path = "data.txt";
-    // // $photoname_ = trim($_POST['photoname_']);
-    // // $email = trim($_POST['date_']);
-    // // $name = trim($_POST['photographer_']);
-    // // $location = trim($_POST['location_']);
-
-    // $counter = 1;
-
-    // $strings = file("data.txt")
-
-    // // count the number of photos in the array
-    // $number_of_photos = count($strings);
-
-
-    // // Check if number of photos are empty
-    // if ($number_of_photos == 0) {
-    //   echo "<p><strong>No photos.<br />
-    //         Please try again later.</strong></p>";
-    // } else {
-      
-    //   $counter = 1;
-
-    // } -->
-
-
-
-
-
-
-
-   
-<?php
-    //Add each lines from data file to an array
-    $filename = "data.txt";
-    $fp = @fopen($filename, "r");
-    if ($fp) {
-      $arr = explode("\n", fread($fp, filesize($filename)));
-    }
 ?>
+
+
+
