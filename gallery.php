@@ -3,6 +3,9 @@
 <?php
 // Sorting variable
 $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
+
+// Remove error reportings
+error_reporting(0);
 ?>
 
 <html lang = "en">
@@ -22,7 +25,7 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
   <div class="container">
     <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">View all photos</h1>
     <form action="gallery.php">
-        <label for="sorting" class ="p1">Sort By:</label>
+        <label for="sorting">Sort By:</label>
         <select name="sortby" id="sorting">
           <option value="NAME">Name</option>
           <option value="DATE_TAKEN">Date Taken</option>
@@ -32,23 +35,23 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
         <button type="submit" value="Submit"> Submit </button>
       </form> 
     <div class="float-right pt-3 ">
-      <a href="index.html" class="btn btn-primary">Upload</a>
+      <a href="index.html" class="btn btn-primary">Upload Photo</a>
     </div>
 
     <hr class="mt-2 mb-5">
+    
     <?php
-
     // Variable for uploads folder
     $user_uploads = "uploads/";
     if (!file_exists($user_uploads)) {
       mkdir($user_uploads, 0777);
     }
-  
+    define('MB', 1048576);
     // Check if image file is a actual image or fake image
     if (isset($_POST['submit'])) {
       $file = $_FILES['file'];
       $fileTmpName = $_FILES['file']['tmp_name'];
-     // $fileSize = $_FILES['file']['size'];
+      $fileSize = $_FILES['file']['size'];
 
       $check = getimagesize($fileTmpName);
 
@@ -59,14 +62,18 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
 
       // Writing image into uploads folder and data into info.txt
       if ($check !== false) {
-        move_uploaded_file($_FILES['file']['tmp_name'], $user_uploads . $_FILES['file']['name']);
+        if ($fileSize < 20*MB){
+          move_uploaded_file($_FILES['file']['tmp_name'], $user_uploads . $_FILES['file']['name']);
 
-        $img = "uploads/" . $_FILES['file']['name'];
-        $filename = "info.txt";
-        $photoInfo = $img . '|' . $photoname . '|' . $date . '|' . $photographer . '|' . $location . "\n";
+          $img = "uploads/" . $_FILES['file']['name'];
+          $filename = "info.txt";
+          $photoInfo = $img . '|' . $photoname . '|' . $date . '|' . $photographer . '|' . $location . "\n";
 
-        file_put_contents($filename, $photoInfo, FILE_APPEND);
-      } else {
+          file_put_contents($filename, $photoInfo, FILE_APPEND);
+        } else {
+          echo "File too thicc";
+        } 
+      }else {
         echo "File is not an image.";
       }
     }
@@ -123,10 +130,10 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
           echo '<a class="d-block mb-4 h-100">';
 
           echo '<img class="img-fluid img-thumbnail" src="' . $array[$i]['image'] . '" /><br />';
-          echo '<h2>Name: ' . $array[$i]['photoname'] . ' </h2>';
-          echo '<h2>Date Taken: ' . $array[$i]['date'] . ' </h2>';
-          echo '<h2>Photographer: ' . $array[$i]['photographer'] . ' </h2>';
-          echo '<h2>Location: ' . $array[$i]['location'] . ' </h2>';
+          echo '<h4>Name: ' . $array[$i]['photoname'] . ' </h4>';
+          echo '<h4>Date Taken: ' . $array[$i]['date'] . ' </h4>';
+          echo '<h4>Photographer: ' . $array[$i]['photographer'] . ' </h4>';
+          echo '<h4>Location: ' . $array[$i]['location'] . ' </h4>';
           echo '</a>';
           echo '</div>';
         }

@@ -16,9 +16,15 @@ h5
   font-weight:700;
 }
 
-p
+.p1
 {
-  font-size:12px;
+  font-size: 25px;
+  font-family: "Garamond", Times, serif;
+}
+
+.p2
+{
+  font-family: "Garamond", Times, serif;
 }
 
 .card {
@@ -38,10 +44,6 @@ p
   transition: 0.3s;
   width: 40%;
   text-align: center;
-}
-
-.p1 {
-  font-family: "Garamond", Times, serif;
 }
 
 /* End Non-Essential  */
@@ -138,24 +140,3 @@ p
   background-color:blue;
   cursor:pointer;
 }
-
-
-/* Optional
-
-.property-image-title
-{
-text-align:center;
-position:Relative;
-top:30%;
-opacity:0;
-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
-color:black;
-font-size:1.2em;
-}
-
-.property-card:hover .property-image-title
-{
-opacity:1;
-}
-
-*/
