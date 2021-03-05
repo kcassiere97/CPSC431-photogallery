@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+<?php
+// Sorting variable
+$sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
+?>
+
 <html lang = "en">
   <head>
     <title>Viewing Your Photos</title>
@@ -9,24 +15,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="color.css">
 </head>
+
   <body>
 
   <!-- Page Content -->
   <div class="container">
     <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">View all photos</h1>
-
-    <!--<div class="dropdown d-inline-block pt-3 ">
-      <span>Sort by: </span>
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Select
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" name="photoName" href="#">Name</a>
-        <a class="dropdown-item" name="dateTaken" href="#">Date Taken</a>
-        <a class="dropdown-item" name="photographerName" href="#">Photographer</a>
-        <a class="dropdown-item" name="locationTaken" href="#">Location</a>
-      </div>
-    </div> -->
     <form action="gallery.php">
         <label for="sorting" class ="p1">Sort By:</label>
         <select name="sortby" id="sorting">
@@ -35,7 +29,7 @@
           <option value="LOCATION">Location</option>
           <option value="PHOTOGRAPHER">Photographer</option>
         </select>          
-        <input type="submit" value="Submit">
+        <button type="submit" value="Submit"> Submit </button>
       </form> 
     <div class="float-right pt-3 ">
       <a href="index.html" class="btn btn-primary">Upload</a>
@@ -43,18 +37,18 @@
 
     <hr class="mt-2 mb-5">
     <?php
+
+    // Variable for uploads folder
     $user_uploads = "uploads/";
     if (!file_exists($user_uploads)) {
       mkdir($user_uploads, 0777);
     }
-   
-    $target_dir = $user_uploads;
-    $uploadOk = 1;
-
+  
     // Check if image file is a actual image or fake image
     if (isset($_POST['submit'])) {
       $file = $_FILES['file'];
       $fileTmpName = $_FILES['file']['tmp_name'];
+     // $fileSize = $_FILES['file']['size'];
 
       $check = getimagesize($fileTmpName);
 
@@ -63,10 +57,9 @@
       $photographer = isset($_POST['photographer']) ? $_POST['photographer'] : '';
       $location = isset($_POST['location']) ? $_POST['location'] : '';
 
+      // Writing image into uploads folder and data into info.txt
       if ($check !== false) {
-    
         move_uploaded_file($_FILES['file']['tmp_name'], $user_uploads . $_FILES['file']['name']);
-        $uploadOk = 1;
 
         $img = "uploads/" . $_FILES['file']['name'];
         $filename = "info.txt";
@@ -75,49 +68,69 @@
         file_put_contents($filename, $photoInfo, FILE_APPEND);
       } else {
         echo "File is not an image.";
-        $uploadOk = 0;
       }
     }
     ?>
 
     <div class="row text-center text-lg-left">
       <?php
+      // Ouputing the data
       $file = explode("\n", file_get_contents("info.txt"));
-     
+      $array = [];
+
+      // Putting the data into an array
       foreach ($file as $line) {
-
-        /*if( ! isset($image)){
-          $image = null;
-        }
-        if( ! isset($photoname)){
-          $photoname = null;
-        }
-        if( ! isset($date)){
-          $date = null;
-        }
-        if( ! isset($photographer)){
-          $photographer = null;
-        }
-        if( ! isset($location)){
-          $location = null;
-        }*/
-
         list($image, $photoname, $date, $photographer, $location) = explode("|", $line);
+        $array[] = array(
+          'image' => $image, 'photoname' => $photoname, 'date' => $date, 'photographer' => $photographer,
+          'location' => $location
+        );
+      }
 
-        if (!empty($image) && !empty($photoname) && !empty($date) && !empty($photographer) && !empty($location)) {
+      // Sorting by Name
+      if ($sortby == 'NAME'){
+        usort($array, function ($a, $b) {
+          return strcmp($a['photoname'], $b['photoname']);
+        });
+      }
+      // Sorting by Date 
+      else if ($sortby == 'DATE_TAKEN') {
+        usort($array, function ($a, $b) {
+          return strcmp($a['date'], $b['date']);
+        });
+      } 
+      // Sorting by Photographer
+      else if ($sortby == 'PHOTOGRAPHER') {
+        usort($array, function ($a, $b) {
+          return strcmp($a['photographer'], $b['photographer']);
+        });
+      } 
+      // Sorting by location
+      else if ($sortby == 'LOCATION') {
+        usort($array, function ($a, $b) {
+          return strcmp($a['location'], $b['location']);
+        });
+      }
 
+      // Outputting the user's input into the gallery
+      for($i = 0; $i < count($array); $i++){
+        if (
+          !empty($array[$i]['image']) && !empty($array[$i]['photoname'])
+          && !empty($array[$i]['date']) && !empty($array[$i]['photographer']) && !empty($array[$i]['location'])
+        ) {
+          
           echo '<div class="col-lg-3 col-md-4 col-6">';
           echo '<a class="d-block mb-4 h-100">';
 
-          echo '<img class="img-fluid img-thumbnail" src="' . $image . '" /><br />';
-          echo '<h2>Name: ' . $photoname . ' </h2>';
-          echo '<h2>Date Taken: ' . $date . ' </h2>';
-          echo '<h2>Photographer: ' . $photographer . ' </h2>';
-          echo '<h2>Location: ' . $location . ' </h2>';
+          echo '<img class="img-fluid img-thumbnail" src="' . $array[$i]['image'] . '" /><br />';
+          echo '<h2>Name: ' . $array[$i]['photoname'] . ' </h2>';
+          echo '<h2>Date Taken: ' . $array[$i]['date'] . ' </h2>';
+          echo '<h2>Photographer: ' . $array[$i]['photographer'] . ' </h2>';
+          echo '<h2>Location: ' . $array[$i]['location'] . ' </h2>';
           echo '</a>';
           echo '</div>';
         }
-      }
+      };
 
       ?>
     </div>
