@@ -107,41 +107,45 @@ function using the php usort function that sorts by properties of those objects,
         echo "<p><strong>No Pictures.<br />
               Please try again later.</strong></p>";
       } 
+      
+                if($number_of_pics){
+
+                  echo "<table>";
+
+            foreach ($data as $data){
+
+                  $mer = list($photoname, $datetaken, $photographer, $location, "uploads/'.$file.'") = explode(" ", $data);
+
+                  $file = trim($file);
+                  $ext = pathinfo($file,PATHINFO_EXTENSION)
+                  $datetaken = trim($datetaken)
+                  $location = trim($location)
+                  $photographer = trim($photographer)
+
+                
+
+                  echo "<tr>";
+                  echo "<th>Picture: </th>";
+                  echo "<th>Date:</th>";
+                  echo "<th>Location: </th>";
+                  echo "<th>Photographer:</th>";
+                  echo "</tr>";
 
 
-      if($number_of_pics){
+                  echo "<tr>"
+                  echo "<td><img src = "uploads/'.$file.'" width = 150 height = 150></td>"
+                  echo "<td style=\"text-align: right;\">$datetaken</td>"
+                  echo "<td style=\"text-align: right;\">$location</td>"   
+                  echo "<td style=\"text-align: right;\">$photographer</td>"
+                  echo "</tr>"
 
-        echo "<table>";
+                  }
 
-        foreach ($data as $d){
+                  array_multisort(array_column($mer, 0), SORT_DESC, $mer);
 
-         list($photoname, $datetaken, $photographer, $location, "uploads/'.$file.'") = explode(" ", $d);
+                  echo "</table>";
 
-         $file = trim($file);
-         $datetaken = trim($datetaken)
-         $location = trim($location)
-         $photographer = trim($photographer)
-
-         echo "<tr>";
-         echo "<th>Picture: </th>";
-         echo "<th>Date:</th>";
-         echo "<th>Location: </th>";
-         echo "<th>Photographer:</th>";
-         echo "</tr>";
-
-
-         echo "<tr>"
-         echo "<td><img src = "uploads/'.$file.'" width = 150 height = 150></td>"
-         echo "<td style=\"text-align: right;\">$datetaken</td>"
-         echo "<td style=\"text-align: right;\">$location</td>"   
-         echo "<td style=\"text-align: right;\">$photographer</td>"
-         echo "</tr>"
-
-        }
-
-         echo "</table>";
-
-      }
+            }
 ?>
 
 
