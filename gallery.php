@@ -5,7 +5,7 @@
 $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
 
 // Remove error reportings
-error_reporting(0);
+//error_reporting(0);
 ?>
 
 <html lang = "en">
@@ -46,7 +46,7 @@ error_reporting(0);
     if (!file_exists($user_uploads)) {
       mkdir($user_uploads, 0777);
     }
-    define('MB', 1048576);
+
     // Check if image file is a actual image or fake image
     if (isset($_POST['submit'])) {
       $file = $_FILES['file'];
@@ -62,7 +62,6 @@ error_reporting(0);
 
       // Writing image into uploads folder and data into info.txt
       if ($check !== false) {
-        if ($fileSize < 20*MB){
           move_uploaded_file($_FILES['file']['tmp_name'], $user_uploads . $_FILES['file']['name']);
 
           $img = "uploads/" . $_FILES['file']['name'];
@@ -70,9 +69,6 @@ error_reporting(0);
           $photoInfo = $img . '|' . $photoname . '|' . $date . '|' . $photographer . '|' . $location . "\n";
 
           file_put_contents($filename, $photoInfo, FILE_APPEND);
-        } else {
-          echo "File too thicc";
-        } 
       }else {
         echo "File is not an image.";
       }
@@ -138,11 +134,8 @@ error_reporting(0);
           echo '</div>';
         }
       };
-
       ?>
     </div>
-
   </div>
- 
 </body>
 </html>
