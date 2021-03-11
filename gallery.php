@@ -3,9 +3,6 @@
 <?php
 // Sorting variable
 $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
-
-// Remove error reportings
-//error_reporting(0);
 ?>
 
 <html lang = "en">
@@ -41,17 +38,109 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
     <hr class="mt-2 mb-5">
     
     <?php
+     if (isset($_POST['submit'])) {
+      $file = $_FILES['file'];
+      $fileTmpName = $_FILES['file']['tmp_name'];
+
+      $check = getimagesize($fileTmpName);
+      
+      if($check !== false){
+        $image = $_FILES['file']['tmp_name'];
+        $imgContent = addslashes(file_get_contents($image));
+
+        /*
+         * Insert image data into database
+         */
+
+        //DB details
+        $dbHost     = "mariadb";
+        $dbUsername = "cs431s16";
+        $dbPassword = "cieyieC4";
+        $dbName     = "cs431s16";
+
+        //Create connection and select DB
+        $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+
+        // Check connection
+        if($db->connect_error){
+          die("Connection failed: " . $db->connect_error);
+        }
+
+        $photoname = isset($_POST['photoname']) ? $_POST['photoname'] : '';
+        $date = isset($_POST['datetaken']) ? $_POST['datetaken'] : '';
+        $photographer = isset($_POST['photographer']) ? $_POST['photographer'] : '';
+        $location = isset($_POST['location']) ? $_POST['location'] : '';
+
+        //Insert image content into database
+        $insert = $db->query("INSERT into Images (Image_File, Image_Name, Date_Taken, Photographer, Location_Taken) 
+        VALUES ('$imgContent', '$photoname', '$date', '$photographer', '$location')");
+        if($insert){
+          echo "File uploaded successfully.";
+        }else{
+          echo "File upload failed, please try again.";
+        } 
+      }else{
+        echo "Please select an image file to upload.";
+    }
+  }
+
+      /*if (isset($_POST['submit'])) {
+        $file = $_FILES['file'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        
+        // create short variable names
+        $img = "uploads/" . $_FILES['file']['name'];
+        $name=$_POST['photoname'];
+        $date=$_POST['datetaken'];
+        $photog=$_POST['photographer'];
+        $location=$_POST['location'];
+
+
+      @$db = new mysqli("mariadb", "cs431s16", "cieyieC4", "cs431s16");
+
+    if (mysqli_connect_errno()) {
+       echo "<p>Error: Could not connect to database.<br/>
+             Please try again later.</p>";
+       exit;
+    }
+
+    $query = "INSERT INTO Images VALUES ($img, ?, ?, ?, ?)";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('sssd', $img, $name, $date, $photog, $location);
+    $stmt->execute();
+
+     //Insert image content into database
+     $insert = $db->query("INSERT into Images (Image_File, Image_Name, Date_Taken, Photographer, Location_Taken) 
+     VALUES ('$img', '$name', '$date', '$photog', '$location')");
+     if($insert){
+         echo "File uploaded successfully.";
+     }else{
+         echo "File upload failed, please try again.";
+     } 
+ }else{
+     echo "Please select an image file to upload.";
+ }
+    if ($stmt->affected_rows > 0) {
+        echo  "<p>Book inserted into the database.</p>";
+    } else {
+        echo "<p>An error has occurred.<br/>
+              The item was not added.</p>";
+    }
+  
+    $db->close();
+  }*/
+
     // Variable for uploads folder
+    /*
     $user_uploads = "uploads/";
     if (!file_exists($user_uploads)) {
       mkdir($user_uploads, 0777);
     }
 
-    // Check if image file is a actual image or fake image
+    // Setting the POST of user input into data fields into associated variables
     if (isset($_POST['submit'])) {
       $file = $_FILES['file'];
       $fileTmpName = $_FILES['file']['tmp_name'];
-      $fileSize = $_FILES['file']['size'];
 
       $check = getimagesize($fileTmpName);
 
@@ -133,7 +222,8 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
           echo '</a>';
           echo '</div>';
         }
-      };
+      };*/
+
       ?>
     </div>
   </div>
