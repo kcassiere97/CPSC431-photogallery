@@ -38,16 +38,22 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
     <hr class="mt-2 mb-5">
     
     <?php
-     if (isset($_POST['submit'])) {
+    // Setting the POST of user input into data fields into associated variables
+    if (isset($_POST['submit'])) {
       $file = $_FILES['file'];
       $fileTmpName = $_FILES['file']['tmp_name'];
 
       $check = getimagesize($fileTmpName);
-      
-      if($check !== false){
-        $image = $_FILES['file']['tmp_name'];
-        $imgContent = addslashes(file_get_contents($image));
 
+      $photoname = isset($_POST['photoname']) ? $_POST['photoname'] : '';
+      $date = isset($_POST['datetaken']) ? $_POST['datetaken'] : '';
+      $photographer = isset($_POST['photographer']) ? $_POST['photographer'] : '';
+      $location = isset($_POST['location']) ? $_POST['location'] : '';
+
+      // Writing image into uploads folder and data into info.txt
+      if ($check !== false) {
+          move_uploaded_file($_FILES['file']['tmp_name'], $user_uploads . $_FILES['file']['name']);
+          $img = "uploads/" . $_FILES['file']['name'];
         /*
          * Insert image data into database
          */
@@ -66,23 +72,48 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
           die("Connection failed: " . $db->connect_error);
         }
 
-        $photoname = isset($_POST['photoname']) ? $_POST['photoname'] : '';
-        $date = isset($_POST['datetaken']) ? $_POST['datetaken'] : '';
-        $photographer = isset($_POST['photographer']) ? $_POST['photographer'] : '';
-        $location = isset($_POST['location']) ? $_POST['location'] : '';
-
-        //Insert image content into database
-        $insert = $db->query("INSERT into Images (Image_File, Image_Name, Date_Taken, Photographer, Location_Taken) 
-        VALUES ('$imgContent', '$photoname', '$date', '$photographer', '$location')");
-        if($insert){
-          echo "File uploaded successfully.";
-        }else{
-          echo "File upload failed, please try again.";
-        } 
-      }else{
-        echo "Please select an image file to upload.";
+         //Insert image content into database
+         $insert = $db->query("INSERT into Images (Image_File, Image_Name, Date_Taken, Photographer, Location_Taken) 
+         VALUES ('$img', '$photoname', '$date', '$photographer', '$location')");
+         if($insert){
+           echo "File uploaded successfully.";
+         }else{
+           echo "File upload failed, please try again.";
+         } 
+       }else{
+         echo "Please select an image file to upload.";
+        }
     }
-  }
+    $db->close();
+
+    ?>
+    <div class="row text-center text-lg-left">
+    
+    <?php
+   /*
+    // connect to database
+    try {
+      $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+      
+      // perform query
+      $query = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images";  
+      $stmt = $db->prepare($query);  
+      $stmt->execute();   // display each returned row
+    while($result = $stmt->fetch(PDO::FETCH_OBJ)) {                                                       
+    echo $result->Image_File;                            
+    echo "<br />Name: ".$result->Image_Name;                                              
+    echo "<br />Date Taken: ".$result->Date_Taken;                                                  
+    echo "<br />Photographer: ".$result->Photographer;
+    echo "<br />Location: ".$result->Lcoation_Taken"</p>";                                         
+  }   
+  $stmt->free_result();
+  $db->close();
+    
+}*/
+
+
+
+
 
       /*if (isset($_POST['submit'])) {
         $file = $_FILES['file'];
