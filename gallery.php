@@ -50,7 +50,7 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
       $photographer = isset($_POST['photographer']) ? $_POST['photographer'] : '';
       $location = isset($_POST['location']) ? $_POST['location'] : '';
 
-      // Writing image into uploads folder and data into info.txt
+      // Writing image into uploads folder 
       if ($check !== false) {
           move_uploaded_file($_FILES['file']['tmp_name'], $user_uploads . $_FILES['file']['name']);
           $img = "uploads/" . $_FILES['file']['name'];
@@ -90,76 +90,63 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
     <div class="row text-center text-lg-left">
     
     <?php
-   /*
+    
+     //DB details
+     $dbHost     = "mariadb";
+     $dbUsername = "cs431s16";
+     $dbPassword = "cieyieC4";
+     $dbName     = "cs431s16";
+
+     // Create connection
+     $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+     // Check connection
+     if ($conn->connect_error) {
+       die("Connection failed: " . $conn->connect_error);
+      }
+      
+      $sql = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images";
+      $result = $conn->query($sql);
+      
+      if ($result->num_rows > 0) {
+        // output data of each row
+
+        echo '<div class="col-lg-3 col-md-4 col-6">';
+        echo '<a class="d-block mb-4 h-100">';
+        
+        while($row = $result->fetch_assoc()) {
+          //echo 'img src=Images/$row[img]'
+          echo '<img class="img-fluid img-thumbnail" src="' . $row['Image_File'] . '" /><br />';
+          echo '<h4>Name: ' . $row['Image_Name'] . ' </h4>';
+          echo '<h4>Date: ' . $row['Date_Taken'] . ' </h4>';
+          echo '<h4>Photographer: ' . $row['Photographer'] . ' </h4>';
+          echo '<h4>Location: ' . $row['Location_Taken'] . ' </h4>';
+        }
+      } else {
+        echo "0 results";
+      }
+      $conn->close();
+    
     // connect to database
-    try {
+    /*try {
       $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
       
       // perform query
-      $query = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images";  
+      $query = "SELECT Image_ID, Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images";  
       $stmt = $db->prepare($query);  
       $stmt->execute();   // display each returned row
-    while($result = $stmt->fetch(PDO::FETCH_OBJ)) {                                                       
-    echo $result->Image_File;                            
-    echo "<br />Name: ".$result->Image_Name;                                              
-    echo "<br />Date Taken: ".$result->Date_Taken;                                                  
-    echo "<br />Photographer: ".$result->Photographer;
-    echo "<br />Location: ".$result->Lcoation_Taken"</p>";                                         
-  }   
-  $stmt->free_result();
-  $db->close();
-    
-}*/
-
-
-
-
-
-      /*if (isset($_POST['submit'])) {
-        $file = $_FILES['file'];
-        $fileTmpName = $_FILES['file']['tmp_name'];
-        
-        // create short variable names
-        $img = "uploads/" . $_FILES['file']['name'];
-        $name=$_POST['photoname'];
-        $date=$_POST['datetaken'];
-        $photog=$_POST['photographer'];
-        $location=$_POST['location'];
-
-
-      @$db = new mysqli("mariadb", "cs431s16", "cieyieC4", "cs431s16");
-
-    if (mysqli_connect_errno()) {
-       echo "<p>Error: Could not connect to database.<br/>
-             Please try again later.</p>";
-       exit;
-    }
-
-    $query = "INSERT INTO Images VALUES ($img, ?, ?, ?, ?)";
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('sssd', $img, $name, $date, $photog, $location);
-    $stmt->execute();
-
-     //Insert image content into database
-     $insert = $db->query("INSERT into Images (Image_File, Image_Name, Date_Taken, Photographer, Location_Taken) 
-     VALUES ('$img', '$name', '$date', '$photog', '$location')");
-     if($insert){
-         echo "File uploaded successfully.";
-     }else{
-         echo "File upload failed, please try again.";
-     } 
- }else{
-     echo "Please select an image file to upload.";
- }
-    if ($stmt->affected_rows > 0) {
-        echo  "<p>Book inserted into the database.</p>";
-    } else {
-        echo "<p>An error has occurred.<br/>
-              The item was not added.</p>";
-    }
-  
-    $db->close();
-  }*/
+      
+      while($result = $stmt->fetch(PDO::FETCH_OBJ)) {                                                       
+        echo $result->Image_File;                            
+        echo "<br />Name: ".$result->Image_Name;                                              
+        echo "<br />Date Taken: ".$result->Date_Taken;                                                  
+        echo "<br />Photographer: ".$result->Photographer;
+        echo "<br />Location: ".$result->Location_Taken;                                         
+      }    
+      // disconnect from database
+      $db = NULL;
+    } catch (PDOException $e) {
+    echo "Error: ".$e->getMessage();
+    exit;*/
 
     // Variable for uploads folder
     /*
