@@ -91,11 +91,15 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
         //connect database
         $db = new mysqli($host, $user, $pass, $db_name);
 
-        if ($db->connect_error) {
-          die("Connection failed: " . $db->connect_error);
-        } else{
+        if ($db->connect_errno) {
+
+          echo "Failed to connect to Database: " . $db -> connect_error;
+          exit();
+
+          } else{
           echo "Connected successfully";
         }
+
         
         //create query 
         $query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photographer','$location')");
@@ -121,9 +125,12 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
           //connect database
           $db = new mysqli($host, $user, $pass, $db_name);
 
-          if ($db->connect_error) {
-             die("Connection failed: " . $db->connect_error);
-          } else{
+          if ($db->connect_errno) {
+
+            echo "Failed to connect to Database: " . $db -> connect_error;
+            exit();
+  
+            } else{
             echo "Connected successfully";
           }
 
