@@ -100,11 +100,62 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
           echo "Connected successfully";
         }
 
-        
+            // create short variable names
+            $searchtype=$_POST['searchtype'];
+            //$searchterm="%{$_POST['searchterm']}%";
+
+            //  if (!$searchtype || !$searchterm) {
+            //      echo '<p>You have not entered search details.<br/>
+            //      Please go back and try again.</p>';
+            //  exit;
+            // }
+
+            // whitelist the searchtype
+            switch ($searchtype) {
+                case 'NAME':
+                case 'DATE_TAKEN':
+                case 'PHOTOGRAPHER':   
+                case 'LOCATION':
+                break;
+            default: 
+                echo '<p>That is not a valid search type. <br/>
+                Please go back and try again.</p>';
+               exit; 
+            }
+
+
+      //             // Sorting by Name
+      // if ($sortby == 'NAME'){
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['photoname'], $b['photoname']);
+      //   });
+      // }
+      // // Sorting by Date 
+      // else if ($sortby == 'DATE_TAKEN') {
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['date'], $b['date']);
+      //   });
+      // } 
+      // // Sorting by Photographer
+      // else if ($sortby == 'PHOTOGRAPHER') {
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['photographer'], $b['photographer']);
+      //   });
+      // } 
+      // // Sorting by location
+      // else if ($sortby == 'LOCATION') {
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['location'], $b['location']);
+      //   });
+      // }
+
         //create query 
         $query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photographer','$location')");
 
         if($query){
+          $stmt = $db->prepare($query);  
+          $stmt->bindParam(':searchterm', $searchtype;
+          $stmt->execute(); 
           echo "File uploaded successfully.";
         }else{
           echo "File upload failed, please try again.";
@@ -134,11 +185,9 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
             echo "Connected successfully";
           }
 
-
-
       // Ouputing the data
       //$file = explode("\n", file_get_contents("info.txt"));
-      $sql = "SELECT * FROM Gallery"
+      $sql = "SELECT * FROM Gallery ORDER BY $searchtype DESC"
       $result = mysqli_query($db, $sql);
 
       if (mysqli_num_rows($result) > 0) {
