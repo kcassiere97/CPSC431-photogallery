@@ -103,23 +103,57 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
      if ($conn->connect_error) {
        die("Connection failed: " . $conn->connect_error);
       }
-      
-      $sql = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images";
-      $result = $conn->query($sql);
+
+     /* switch ($sortby) {
+        case 'NAME':
+          $sortName = "SELECT * FROM Images ORDER BY Image_Name;";
+          break;
+        case 'DATE_TAKEN':
+          $sql = "SELECT * FROM Images ORDER BY Date_Taken;";
+        case 'PHOTOGRAPHER':
+          $sql = "SELECT * FROM Images ORDER BY Photographer;";
+        case 'LOCATION':
+          $sql = "SELECT * FROM Images ORDER BY Location_Taken;";
+          default:
+          break;
+        }*/
+
+        $sql = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images";
+        $result = $conn->query($sql);
+        
+        // Sorting by Name
+        if ($sortby == 'NAME'){
+          $sortName = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images ORDER BY Image_Name";
+          $result = $conn->query($sortName);
+        }
+        // Sorting by Date 
+        else if ($sortby == 'DATE_TAKEN') {
+          $sql = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images ORDER BY Date_Taken";
+          $result = $conn->query($sql);
+        } 
+        // Sorting by Photographer
+        else if ($sortby == 'PHOTOGRAPHER') {
+          $sql = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images ORDER BY Photographer";
+          $result = $conn->query($sql);
+        } 
+        // Sorting by location
+        else if ($sortby == 'LOCATION') {
+          $sql = "SELECT Image_File, Image_Name, Date_Taken, Photographer, Location_Taken FROM Images ORDER BY Location_Taken";
+          $result = $conn->query($sql);
+        }
       
       if ($result->num_rows > 0) {
-        // output data of each row
-
-        echo '<div class="col-lg-3 col-md-4 col-6">';
-        echo '<a class="d-block mb-4 h-100">';
-        
+        // Outputting the user's input into the gallery
         while($row = $result->fetch_assoc()) {
-          //echo 'img src=Images/$row[img]'
+          echo '<div class="col-lg-3 col-md-4 col-6">';
+          echo '<a class="d-block mb-4 h-100">';
           echo '<img class="img-fluid img-thumbnail" src="' . $row['Image_File'] . '" /><br />';
           echo '<h4>Name: ' . $row['Image_Name'] . ' </h4>';
           echo '<h4>Date: ' . $row['Date_Taken'] . ' </h4>';
           echo '<h4>Photographer: ' . $row['Photographer'] . ' </h4>';
           echo '<h4>Location: ' . $row['Location_Taken'] . ' </h4>';
+          echo '</a>';
+          echo '</div>';
         }
       } else {
         echo "0 results";
