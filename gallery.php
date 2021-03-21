@@ -86,7 +86,7 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
         $db_name = 'cs431s31';
 
         // set up DSN
-        //$dsn = "mysql:host=$host;dbname=$cs431s31";
+        $dsn = "mysql:host=$host;dbname=$cs431s31";
 
         //connect database
         $db = new mysqli($host, $user, $pass, $db_name);
