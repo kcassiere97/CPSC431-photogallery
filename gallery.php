@@ -102,6 +102,7 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
 
             // create short variable names
             $searchtype=$_POST['searchtype'];
+            $searchtype = $sortby
             //$searchterm="%{$_POST['searchterm']}%";
 
             //  if (!$searchtype || !$searchterm) {
@@ -111,43 +112,7 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
             // }
 
             // whitelist the searchtype
-            switch ($searchtype) {
-                case 'NAME':
-                case 'DATE_TAKEN':
-                case 'PHOTOGRAPHER':   
-                case 'LOCATION':
-                break;
-            default: 
-                echo '<p>That is not a valid search type. <br/>
-                Please go back and try again.</p>';
-               exit; 
-            }
 
-
-      //             // Sorting by Name
-      // if ($sortby == 'NAME'){
-      //   usort($array, function ($a, $b) {
-      //     return strcmp($a['photoname'], $b['photoname']);
-      //   });
-      // }
-      // // Sorting by Date 
-      // else if ($sortby == 'DATE_TAKEN') {
-      //   usort($array, function ($a, $b) {
-      //     return strcmp($a['date'], $b['date']);
-      //   });
-      // } 
-      // // Sorting by Photographer
-      // else if ($sortby == 'PHOTOGRAPHER') {
-      //   usort($array, function ($a, $b) {
-      //     return strcmp($a['photographer'], $b['photographer']);
-      //   });
-      // } 
-      // // Sorting by location
-      // else if ($sortby == 'LOCATION') {
-      //   usort($array, function ($a, $b) {
-      //     return strcmp($a['location'], $b['location']);
-      //   });
-      // }
 
         //create query 
         $query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photographer','$location')");
@@ -185,78 +150,140 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
             echo "Connected successfully";
           }
 
+
+
+
+
       // Ouputing the data
       //$file = explode("\n", file_get_contents("info.txt"));
-      $sql = "SELECT * FROM Gallery ORDER BY $searchtype DESC"
-      $result = mysqli_query($db, $sql);
+      // $sql = "SELECT * FROM Gallery ORDER BY $searchtype DESC"
+      // $result = mysqli_query($db, $sql);
 
-      if (mysqli_num_rows($result) > 0) {
-        // output data of each row
-        while($row = mysqli_fetch_assoc($result)) {
-          //$query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photoname','$location')");
-          echo "File: " . $row["FILENAME"]. " - Photoname: " . $row["PHOTONAME"]. "- Date:" . $row["DATE"]. "-Photographer:" . $row["PHOTOGRAPHER"]. "- Location:" . $row["LOCATION"] "<br>";
-        }
-      } else {
-        echo "0 results";
-      }
 
+      switch ($searchtype) {
+        case 'NAME':
+          $sql = "SELECT * FROM Gallery ORDER BY $filename DESC"
+          $result = mysqli_query($db, $sql);
+          if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($result)) {
+              //$query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photoname','$location')");
+              echo "File: " . $row["FILENAME"]. " - Photoname: " . $row["PHOTONAME"]. "- Date:" . $row["DATE"]. "-Photographer:" . $row["PHOTOGRAPHER"]. "- Location:" . $row["LOCATION"] "<br>";
+            }
+          } else {
+            echo "0 results";
+          }
+        case 'DATE_TAKEN':
+          $sql = "SELECT * FROM Gallery ORDER BY $date DESC"
+          $result = mysqli_query($db, $sql);
+          if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($result)) {
+              //$query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photoname','$location')");
+              echo "File: " . $row["FILENAME"]. " - Photoname: " . $row["PHOTONAME"]. "- Date:" . $row["DATE"]. "-Photographer:" . $row["PHOTOGRAPHER"]. "- Location:" . $row["LOCATION"] "<br>";
+            }
+          } else {
+            echo "0 results";
+          }
+        case 'PHOTOGRAPHER':  
+          $sql = "SELECT * FROM Gallery ORDER BY $photographer DESC"
+          $result = mysqli_query($db, $sql);
+          if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($result)) {
+              //$query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photoname','$location')");
+              echo "File: " . $row["FILENAME"]. " - Photoname: " . $row["PHOTONAME"]. "- Date:" . $row["DATE"]. "-Photographer:" . $row["PHOTOGRAPHER"]. "- Location:" . $row["LOCATION"] "<br>";
+            }
+          } else {
+            echo "0 results";
+          }
+        case 'LOCATION':
+          $sql = "SELECT * FROM Gallery ORDER BY $location DESC"
+          $result = mysqli_query($db, $sql);
+          if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($result)) {
+              //$query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photoname','$location')");
+              echo "File: " . $row["FILENAME"]. " - Photoname: " . $row["PHOTONAME"]. "- Date:" . $row["DATE"]. "-Photographer:" . $row["PHOTOGRAPHER"]. "- Location:" . $row["LOCATION"] "<br>";
+            }
+          } else {
+            echo "0 results";
+          }
+        break;
+    default: 
+        echo '<p>That is not a valid search type. <br/>
+        Please go back and try again.</p>';
+       exit; 
+    }
+
+      // if (mysqli_num_rows($result) > 0) {
+      //   // output data of each row
+      //   while($row = mysqli_fetch_assoc($result)) {
+      //     //$query = $db -> query("INSERT INTO Gallery (FILENAME,PHOTONAME,DATE,PHOTOGRAPHER,LOCATION) VALUES ('$imgContent','$photoname','$date','$photoname','$location')");
+      //     echo "File: " . $row["FILENAME"]. " - Photoname: " . $row["PHOTONAME"]. "- Date:" . $row["DATE"]. "-Photographer:" . $row["PHOTOGRAPHER"]. "- Location:" . $row["LOCATION"] "<br>";
+      //   }
+      // } else {
+      //   echo "0 results";
+      // }
+
+      //Fetch data to sort
 
       
-      $array = [];
+      // $array = [];
 
-      // Putting the data into an array
-      foreach ($file as $line) {
-        list($image, $photoname, $date, $photographer, $location) = explode("|", $line);
-        $array[] = array(
-          'image' => $image, 'photoname' => $photoname, 'date' => $date, 'photographer' => $photographer,
-          'location' => $location
-        );
-      }
+      // // Putting the data into an array
+      // foreach ($file as $line) {
+      //   list($image, $photoname, $date, $photographer, $location) = explode("|", $line);
+      //   $array[] = array(
+      //     'image' => $image, 'photoname' => $photoname, 'date' => $date, 'photographer' => $photographer,
+      //     'location' => $location
+      //   );
+      // }
 
       // Sorting by Name
-      if ($sortby == 'NAME'){
-        usort($array, function ($a, $b) {
-          return strcmp($a['photoname'], $b['photoname']);
-        });
-      }
-      // Sorting by Date 
-      else if ($sortby == 'DATE_TAKEN') {
-        usort($array, function ($a, $b) {
-          return strcmp($a['date'], $b['date']);
-        });
-      } 
-      // Sorting by Photographer
-      else if ($sortby == 'PHOTOGRAPHER') {
-        usort($array, function ($a, $b) {
-          return strcmp($a['photographer'], $b['photographer']);
-        });
-      } 
-      // Sorting by location
-      else if ($sortby == 'LOCATION') {
-        usort($array, function ($a, $b) {
-          return strcmp($a['location'], $b['location']);
-        });
-      }
+      // if ($sortby == 'NAME'){
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['photoname'], $b['photoname']);
+      //   });
+      // }
+      // // Sorting by Date 
+      // else if ($sortby == 'DATE_TAKEN') {
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['date'], $b['date']);
+      //   });
+      // } 
+      // // Sorting by Photographer
+      // else if ($sortby == 'PHOTOGRAPHER') {
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['photographer'], $b['photographer']);
+      //   });
+      // } 
+      // // Sorting by location
+      // else if ($sortby == 'LOCATION') {
+      //   usort($array, function ($a, $b) {
+      //     return strcmp($a['location'], $b['location']);
+      //   });
+      // }
 
       //Outputting the user's input into the gallery
-      for($i = 0; $i < count($array); $i++){
-        if (
-          !empty($array[$i]['image']) && !empty($array[$i]['photoname'])
-          && !empty($array[$i]['date']) && !empty($array[$i]['photographer']) && !empty($array[$i]['location'])
-        ) {
+      // for($i = 0; $i < count($array); $i++){
+      //   if (
+      //     !empty($array[$i]['image']) && !empty($array[$i]['photoname'])
+      //     && !empty($array[$i]['date']) && !empty($array[$i]['photographer']) && !empty($array[$i]['location'])
+      //   ) {
           
-          echo '<div class="col-lg-3 col-md-4 col-6">';
-          echo '<a class="d-block mb-4 h-100">';
+      //     echo '<div class="col-lg-3 col-md-4 col-6">';
+      //     echo '<a class="d-block mb-4 h-100">';
 
-          echo '<img class="img-fluid img-thumbnail" src="' . $array[$i]['image'] . '" /><br />';
-          echo '<h4>Name: ' . $array[$i]['photoname'] . ' </h4>';
-          echo '<h4>Date Taken: ' . $array[$i]['date'] . ' </h4>';
-          echo '<h4>Photographer: ' . $array[$i]['photographer'] . ' </h4>';
-          echo '<h4>Location: ' . $array[$i]['location'] . ' </h4>';
-          echo '</a>';
-          echo '</div>';
-        }
-      };
+      //     echo '<img class="img-fluid img-thumbnail" src="' . $array[$i]['image'] . '" /><br />';
+      //     echo '<h4>Name: ' . $array[$i]['photoname'] . ' </h4>';
+      //     echo '<h4>Date Taken: ' . $array[$i]['date'] . ' </h4>';
+      //     echo '<h4>Photographer: ' . $array[$i]['photographer'] . ' </h4>';
+      //     echo '<h4>Location: ' . $array[$i]['location'] . ' </h4>';
+      //     echo '</a>';
+      //     echo '</div>';
+      //   }
+      // };
 
       ?>
     </div>
