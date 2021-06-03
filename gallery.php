@@ -80,13 +80,13 @@ $sortby = isset($_GET['sortby']) ? $_GET['sortby'] : '';
         $imgContent = addslashes(file_get_contents($img));
 
         // set up for using PDO
-        $user = 'cs431s31';
-        $pass = 'aoma2Gei';
+        $user = 'cs431sXX';
+        $pass = 'KEKW';
         $host = 'mariadb';
-        $db_name = 'cs431s31';
+        $db_name = 'cs431sXX';
 
         // set up DSN
-        $dsn = "mysql:host=$host;dbname=$cs431s31";
+        $dsn = "mysql:host=$host;dbname=$cs431sXX";
 
         //connect database
         $db = new mysqli($host, $user, $pass, $db_name);
